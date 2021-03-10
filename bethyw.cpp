@@ -66,7 +66,7 @@ int BethYw::run(int argc, char *argv[])
   std::string dir = args["dir"].as<std::string>() + DIR_SEP;
 
   // Parse other arguments and import data
-  // auto datasetsToImport = BethYw::parseDatasetsArg(args);
+  auto datasetsToImport = BethYw::parseDatasetsArg(args);
   // auto areasFilter      = BethYw::parseAreasArg(args);
   // auto measuresFilter   = BethYw::parseMeasuresArg(args);
   // auto yearsFilter      = BethYw::parseYearsArg(args);
@@ -270,6 +270,8 @@ std::unordered_set<std::string> BethYw::parseAreasArg(
   // The unordered set you will return
   std::unordered_set<std::string> areas;
 
+  auto &allAreas = InputFiles::AREAS;
+
   // Retrieve the areas argument like so:
   auto temp = args["areas"].as<std::vector<std::string>>();
 
@@ -315,7 +317,13 @@ std::unordered_set<std::string> BethYw::parseAreasArg(
     with the message: Invalid input for measures argument
 */
 
-/*
+// std::unordered_set<std::string> BethYw::parseAreasArg(
+//     cxxopts::ParseResult &args)
+// {
+//   auto temp = args["measures"].as<std::vector<std::string>>();
+// }
+
+/*/
   TODO: BethYw::parseYearsArg(args)
 
   Parse the years command line argument. Years is either a four digit year 
