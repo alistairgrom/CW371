@@ -67,8 +67,8 @@ int BethYw::run(int argc, char *argv[])
 
   // Parse other arguments and import data
   auto datasetsToImport = BethYw::parseDatasetsArg(args);
-  // auto areasFilter      = BethYw::parseAreasArg(args);
-  // auto measuresFilter   = BethYw::parseMeasuresArg(args);
+  auto areasFilter = BethYw::parseAreasArg(args);
+  auto measuresFilter = BethYw::parseMeasuresArg(args);
   // auto yearsFilter      = BethYw::parseYearsArg(args);
 
   Areas data = Areas();
@@ -270,7 +270,7 @@ std::unordered_set<std::string> BethYw::parseAreasArg(
   // The unordered set you will return
   std::unordered_set<std::string> areas;
 
-  //auto &allAreas = InputFiles::AREAS;
+  auto &allAreas = InputFiles::AREAS;
 
   // Retrieve the areas argument like so:
   auto areas_args = args["areas"].as<std::vector<std::string>>();
@@ -370,11 +370,25 @@ std::unordered_set<std::string> BethYw::parseAreasArg(
     with the message: Invalid input for measures argument
 */
 
-// std::unordered_set<std::string> BethYw::parseAreasArg(
-//     cxxopts::ParseResult &args)
-// {
-//   auto temp = args["measures"].as<std::vector<std::string>>();
-// }
+std::unordered_set<std::string> BethYw::parseMeasuresArg(
+    cxxopts::ParseResult &args)
+{
+  auto temp = args["measures"].as<std::vector<std::string>>();
+  std::unordered_set<std::string> measures;
+
+  for (unsigned int i = 0; i < temp.size(); i++)
+  {
+    measures.insert(temp[i]);
+
+    if (temp[i] == "all")
+    {
+      std::unordered_set<std::string> measures;
+      return measures;
+    }
+  }
+
+  return measures;
+}
 
 /*/
   TODO: BethYw::parseYearsArg(args)

@@ -61,6 +61,8 @@ namespace BethYw
 */
   std::unordered_set<std::string> parseAreasArg(cxxopts::ParseResult &args);
 
+  std::unordered_set<std::string> parseMeasuresArg(cxxopts::ParseResult &args);
+
 } // namespace BethYw
 
 #endif // BETHYW_H_
