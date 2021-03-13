@@ -270,18 +270,16 @@ std::unordered_set<std::string> BethYw::parseAreasArg(
   // The unordered set you will return
   std::unordered_set<std::string> areas;
 
-  auto &allAreas = InputFiles::AREAS;
+  //auto &allAreas = InputFiles::AREAS;
 
   // Retrieve the areas argument like so:
-  auto temp = args["areas"].as<std::vector<std::string>>();
+  auto areas_args = args["areas"].as<std::vector<std::string>>();
 
-  //std::cout << temp[0] << ": " << "" << std::endl;
-
-  for (unsigned int i = 0; i < temp.size(); i++)
+  for (unsigned int i = 0; i < areas_args.size(); i++)
   {
-    areas.insert(temp[i]);
+    areas.insert(areas_args[i]);
 
-    if (temp[i] == "all")
+    if (areas_args[i] == "all")
     {
       std::unordered_set<std::string> areas;
       return areas;
@@ -289,6 +287,61 @@ std::unordered_set<std::string> BethYw::parseAreasArg(
   }
 
   return areas;
+
+  //std::cout << temp[0] << ": " << "" << std::endl;
+  // std::string area_array[24];
+
+  // for (unsigned int i = 1; i < 25; i++)
+  // {
+  //   std::string areaString;
+  //   std::stringstream ss;
+  //   if (i < 10)
+  //   {
+  //     ss << "W060000"
+  //        << "0" << i;
+  //     areaString = ss.str();
+  //   }
+  //   else
+  //   {
+  //     ss << "W060000" << i;
+  //     areaString = ss.str();
+  //   }
+  //   area_array[i - 1] = areaString;
+  //   //std::cout << area_array[i - 1] << std::endl;
+  // }
+
+  // bool all_added = false;
+  // for (unsigned int i = 0; i < areas_args.size(); i++)
+  // {
+  //   if (areas_args[i] == "all")
+  //   {
+
+  //     all_added = true;
+  //   }
+  //   return areas;
+  // }
+
+  // if (!all_added)
+  // {
+
+  //   for (unsigned int i = 0; i < areas_args.size(); i++)
+  //   {
+  //     //std::cout << areas_args[i] << ": "<< "" << std::endl;
+  //     for (unsigned int j = 0; j < 23; j++)
+  //     {
+  //       std::cout << areas_args[i] << std::endl;
+  //       std::cout << area_array[j] << std::endl;
+  //       if ((areas_args[i] == area_array[j]))
+  //       {
+  //         areas.insert(areas_args[i]);
+  //       }
+  //       else
+  //         throw(std::invalid_argument("Invalid input for area argument"));
+  //     }
+  //   }
+
+  //   return areas;
+  // }
 }
 
 /*
