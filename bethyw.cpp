@@ -270,7 +270,7 @@ std::unordered_set<std::string> BethYw::parseAreasArg(
   // The unordered set you will return
   std::unordered_set<std::string> areas;
 
-  auto &allAreas = InputFiles::AREAS;
+  //auto &allAreas = InputFiles::AREAS;
 
   // Retrieve the areas argument like so:
   auto areas_args = args["areas"].as<std::vector<std::string>>();
@@ -437,17 +437,34 @@ std::tuple<unsigned int, unsigned int> BethYw::parseYearsArg(cxxopts::ParseResul
   // }
   // else
   // {
+  //    throw(std::invalid_argument("Invalid input for years argument"));
   // }
 
   for (unsigned int i = 0; i < temp.size(); i++)
   {
     if (isdigit(temp[i]) || (temp[i] == '-'))
     {
-      std::cout << temp[i] << " " << i << std::endl;
+      if (temp.size() == 9)
+      {
+        std::string year_str1 = temp.substr(0, 4);
+        unsigned int year_int1 = std::stoi(year_str1);
+
+        std::string year_str2 = temp.substr(5, 8);
+        unsigned int year_int2 = std::stoi(year_str2);
+
+        years = std::make_tuple(year_int1, year_int2);
+      }
+      else if (temp.size() == 4)
+      {
+        std::string year_str1 = temp.substr(0, 4);
+        unsigned int year_int1 = std::stoi(year_str1);
+
+        years = std::make_tuple(year_int1, year_int1);
+      }
     }
     else
     {
-      std::cout << temp[i] << " " << i << " LETTER" << std::endl;
+      throw(std::invalid_argument("Invalid input for years argument"));
     }
   }
 
