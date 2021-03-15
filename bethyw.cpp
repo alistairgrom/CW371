@@ -69,7 +69,7 @@ int BethYw::run(int argc, char *argv[])
   auto datasetsToImport = BethYw::parseDatasetsArg(args);
   auto areasFilter = BethYw::parseAreasArg(args);
   auto measuresFilter = BethYw::parseMeasuresArg(args);
-  // auto yearsFilter      = BethYw::parseYearsArg(args);
+  auto yearsFilter = BethYw::parseYearsArg(args);
 
   Areas data = Areas();
 
@@ -413,6 +413,46 @@ std::unordered_set<std::string> BethYw::parseMeasuresArg(
     std::invalid_argument if the argument contains an invalid years value with
     the message: Invalid input for years argument
 */
+
+std::tuple<unsigned int, unsigned int> BethYw::parseYearsArg(cxxopts::ParseResult &args)
+{
+  std::tuple<unsigned int, unsigned int> years;
+  auto temp = args["years"].as<std::string>();
+
+  // if (temp.size() == 4)
+  // {
+  //   unsigned int year_int = std::stoi(temp);
+
+  //   years = std::make_tuple(year_int, year_int);
+  // }
+  // else if (temp.size() == 9)
+  // {
+  //   std::string year_str1 = temp.substr(1, 4);
+  //   unsigned int year_int1 = std::stoi(year_str1);
+
+  //   std::string year_str2 = temp.substr(5, 9);
+  //   unsigned int year_int2 = std::stoi(year_str2);
+
+  //   years = std::make_tuple(year_int1, year_int2);
+  // }
+  // else
+  // {
+  // }
+
+  for (unsigned int i = 0; i < temp.size(); i++)
+  {
+    if (isdigit(temp[i]) || (temp[i] == '-'))
+    {
+      std::cout << temp[i] << " " << i << std::endl;
+    }
+    else
+    {
+      std::cout << temp[i] << " " << i << " LETTER" << std::endl;
+    }
+  }
+
+  return years;
+}
 
 /*
   TODO: BethYw::loadAreas(areas, dir, areasFilter)

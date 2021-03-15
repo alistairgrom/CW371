@@ -63,6 +63,8 @@ namespace BethYw
 
   std::unordered_set<std::string> parseMeasuresArg(cxxopts::ParseResult &args);
 
+  std::tuple<unsigned int, unsigned int> parseYearsArg(cxxopts::ParseResult &args);
+
 } // namespace BethYw
 
 #endif // BETHYW_H_
