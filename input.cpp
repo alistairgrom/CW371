@@ -28,7 +28,7 @@
 */
 InputSource::InputSource(const std::string &source)
 {
-  throw std::logic_error("InputSource::InputSource() has not been implemented!");
+  //throw std::logic_error("InputSource::InputSource() has not been implemented!");
 }
 
 /*
@@ -39,6 +39,11 @@ InputSource::InputSource(const std::string &source)
   @return
     A non-modifable value for the source passed into the construtor.
 */
+
+// const std::string InputSource::getSource()
+// {
+//   return &source;
+// }
 
 /*
   TODO: InputFile:InputFile(path)
