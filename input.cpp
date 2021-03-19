@@ -18,6 +18,9 @@
 
 #include "input.h"
 
+#include <iostream>
+#include <fstream>
+
 /*
   TODO: InputSource::InputSource(source)
 
@@ -28,6 +31,8 @@
 */
 InputSource::InputSource(const std::string &source)
 {
+  this->source = source;
+
   //throw std::logic_error("InputSource::InputSource() has not been implemented!");
 }
 
@@ -40,10 +45,10 @@ InputSource::InputSource(const std::string &source)
     A non-modifable value for the source passed into the construtor.
 */
 
-// const std::string InputSource::getSource()
-// {
-//   return &source;
-// }
+std::string InputSource::getSource() const
+{
+  return source;
+}
 
 /*
   TODO: InputFile:InputFile(path)
@@ -58,7 +63,9 @@ InputSource::InputSource(const std::string &source)
 */
 InputFile::InputFile(const std::string &filePath) : InputSource(filePath)
 {
-  throw std::logic_error("InputFile::InputFile() has not been implemented!");
+  this->source = filePath;
+
+  //throw std::logic_error("InputFile::InputFile() has not been implemented!");
 }
 
 /*
@@ -78,3 +85,31 @@ InputFile::InputFile(const std::string &filePath) : InputSource(filePath)
     InputFile input("data/areas.csv");
     input.open();
 */
+
+std::istream &InputFile::open()
+{
+  std::ifstream ifs;
+  std::string line;
+  ifs.open(this->getSource().c_str(), std::ios::binary);
+
+  if (ifs.is_open())
+  {
+    // while (std::getline(ifs, line))
+    // {
+    //   //std::cout << line << '\n';
+    // }
+    std::streampos size = ifs.tellg();
+    char *memblock = new char[size];
+    ifs.seekg(0, std::ios::beg);
+    ifs.read(memblock, size);
+    ifs.close();
+    ifs.close();
+    delete[] memblock;
+  }
+  else
+    throw(std::runtime_error("InputFile::open: Failed to open file " + this->getSource()));
+
+  std::istream &is(ifs);
+  //ifs.close();
+  return is;
+}

@@ -69,7 +69,7 @@ int BethYw::run(int argc, char *argv[])
   auto datasetsToImport = BethYw::parseDatasetsArg(args);
   auto areasFilter = BethYw::parseAreasArg(args);
   auto measuresFilter = BethYw::parseMeasuresArg(args);
-  auto yearsFilter = BethYw::parseYearsArg(args);
+  //auto yearsFilter = BethYw::parseYearsArg(args);
 
   Areas data = Areas();
 
