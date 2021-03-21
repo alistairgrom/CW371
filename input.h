@@ -63,8 +63,6 @@ private:
 public:
   InputFile(const std::string &filePath);
   std::istream &open();
-  std::ifstream ifs;
-  std::string line;
 
   //std::istream &is(std::string);
 };

@@ -31,7 +31,21 @@
 */
 class Area
 {
+private:
+  std::string localAuthorityCode;
+  std::string langCode;
+  std::string langValue;
+
+  std::string langCodeWelsh;
+  std::string langCodeEnglish;
+  std::string langValueWelsh;
+  std::string langValueEnglish;
+
+public:
   Area(const std::string &localAuthorityCode);
+  std::string getLocalAuthorityCode();
+  std::string getName(std::string) const;
+  void setName(std::string lang, std::string name);
 };
 
 #endif // AREA_H_

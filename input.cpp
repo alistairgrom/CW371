@@ -88,28 +88,26 @@ InputFile::InputFile(const std::string &filePath) : InputSource(filePath)
 
 std::istream &InputFile::open()
 {
-  std::ifstream ifs;
-  std::string line;
-  ifs.open(this->getSource().c_str(), std::ios::binary);
+  std::istream &istream = std::cin;
+  std::ifstream ifstream(this->getSource().c_str());
+  istream.rdbuf(ifstream.rdbuf());
 
-  if (ifs.is_open())
+  if (!ifstream.is_open())
   {
-    // while (std::getline(ifs, line))
-    // {
-    //   //std::cout << line << '\n';
-    // }
-    std::streampos size = ifs.tellg();
-    char *memblock = new char[size];
-    ifs.seekg(0, std::ios::beg);
-    ifs.read(memblock, size);
-    ifs.close();
-    ifs.close();
-    delete[] memblock;
-  }
-  else
     throw(std::runtime_error("InputFile::open: Failed to open file " + this->getSource()));
+  }
 
-  std::istream &is(ifs);
-  //ifs.close();
-  return is;
+  if (ifstream)
+  {
+    ifstream.seekg(0, ifstream.end);
+    int length = ifstream.tellg();
+    ifstream.seekg(0, ifstream.beg);
+
+    char *buffer = new char[length];
+    ifstream.read(buffer, length);
+
+    delete[] buffer;
+    return istream;
+  }
+  return istream;
 }

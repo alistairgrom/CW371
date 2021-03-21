@@ -33,7 +33,9 @@
 */
 Area::Area(const std::string &localAuthorityCode)
 {
-  throw std::logic_error("Area::Area() has not been implemented!");
+  this->localAuthorityCode = localAuthorityCode;
+
+  //throw std::logic_error("Area::Area() has not been implemented!");
 }
 
 /*
@@ -50,6 +52,11 @@ Area::Area(const std::string &localAuthorityCode)
     ...
     auto authCode = area.getLocalAuthorityCode();
 */
+
+std::string Area::getLocalAuthorityCode()
+{
+  return localAuthorityCode;
+}
 
 /*
   TODO: Area::getName(lang)
@@ -76,6 +83,23 @@ Area::Area(const std::string &localAuthorityCode)
     auto name = area.getName(langCode);
 */
 
+std::string Area::getName(std::string lang) const
+{
+  if (lang == "eng")
+  {
+    return langValueEnglish;
+  }
+  if (lang == "cym")
+  {
+    return langValueWelsh;
+  }
+  else
+  {
+    throw(std::out_of_range("Area::setName: Language code must be three alphabetical letters only"));
+  }
+  return NULL;
+}
+
 /*
   TODO: Area::setName(lang, name)
 
@@ -101,6 +125,24 @@ Area::Area(const std::string &localAuthorityCode)
     std::string langValueWelsh = "Powys";
     area.setName(langCodeWelsh, langValueWelsh);
 */
+
+void Area::setName(std::string lang, std::string name)
+{
+  if (lang == "eng")
+  {
+    this->langCodeEnglish = lang;
+    this->langValueEnglish = name;
+  }
+  if (lang == "cym")
+  {
+    this->langCodeWelsh = lang;
+    this->langValueWelsh = name;
+  }
+  else
+  {
+    throw(std::invalid_argument("Area::setName: Language code must be three alphabetical letters only"));
+  }
+}
 
 /*
   TODO: Area::getMeasure(key)

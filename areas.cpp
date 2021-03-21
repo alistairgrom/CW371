@@ -45,7 +45,8 @@ using json = nlohmann::json;
 */
 Areas::Areas()
 {
-  throw std::logic_error("Areas::Areas() has not been implemented!");
+
+  //throw std::logic_error("Areas::Areas() has not been implemented!");
 }
 
 /*
@@ -73,6 +74,11 @@ Areas::Areas()
     Area area(localAuthorityCode);
     data.setArea(localAuthorityCode, area);
 */
+void Areas::setArea(std::string localAuthorityCode, std::string area)
+{
+  this->localAuthorityCode = localAuthorityCode;
+  this->area = area;
+}
 
 /*
   TODO: Areas::getArea(localAuthorityCode)
@@ -116,6 +122,10 @@ Areas::Areas()
     
     auto size = areas.size(); // returns 1
 */
+
+int Areas::size()
+{
+}
 
 /*
   TODO: Areas::populateFromAuthorityCodeCSV(is, cols, areasFilter)
@@ -173,8 +183,9 @@ void Areas::populateFromAuthorityCodeCSV(
     const BethYw::SourceColumnMapping &cols,
     const StringFilterSet *const areasFilter)
 {
-  throw std::logic_error(
-      "Areas::populateFromAuthorityCodeCSV() has not been implemented!");
+  // throw std::logic_error(
+  //     "Areas::populateFromAuthorityCodeCSV() has not been implemented!");
+  std::cout << is.rdbuf();
 }
 
 /*
