@@ -30,6 +30,7 @@
 #include <string>
 #include <tuple>
 #include <unordered_set>
+#include <vector>
 
 #include "datasets.h"
 #include "area.h"

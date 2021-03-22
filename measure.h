@@ -15,6 +15,7 @@
  */
 
 #include <string>
+#include <vector>
 
 /*
   The Measure class contains a measure code, label, and a container for readings
@@ -29,12 +30,21 @@ class Measure
 private:
   std::string codename;
   std::string label;
+  std::vector<double> values;
+
+  int key; // the year
+  double value;
 
 public:
   Measure(std::string code, const std::string &label);
   std::string getCodename() const;
+
   std::string getLabel() const;
   void setLabel(std::string label);
+
+  double getValue(int year);
+  void setValue(int key, double value);
+
   int size() const;
 };
 

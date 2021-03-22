@@ -19,6 +19,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <algorithm>
 
 #include "measure.h"
 
@@ -146,6 +147,19 @@ void Measure::setLabel(std::string label)
     auto value = measure.getValue(1999); // returns 12345678.9
 */
 
+double Measure::getValue(int key)
+{
+  if (std::find(values.begin(), values.end(), this->key) != values.end())
+  {
+    return this->value;
+  }
+  else
+  {
+    throw(std::out_of_range("No value found for year " + key));
+  }
+  return 0;
+}
+
 /*
   TODO: Measure::setValue(key, value)
 
@@ -169,6 +183,12 @@ void Measure::setLabel(std::string label)
     measure.setValue(1999, 12345678.9);
 */
 
+void Measure::setValue(int key, double value)
+{
+  this->key = key;
+  this->value = value;
+}
+
 /*
   TODO: Measure::size()
 
@@ -190,7 +210,7 @@ void Measure::setLabel(std::string label)
 
 int Measure::size() const
 {
-  return 0;
+  return values.size();
 }
 
 /*
