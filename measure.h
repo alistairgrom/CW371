@@ -16,7 +16,9 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
+using MeasureContainer = std::vector<double>;
 /*
   The Measure class contains a measure code, label, and a container for readings
   from across a number of years.
@@ -28,11 +30,12 @@
 class Measure
 {
 private:
+  std::string name;
   std::string codename;
   std::string label;
-  std::vector<double> values;
+  std::map<int, double> values;
 
-  int key; // the year
+  double key; // the year
   double value;
 
 public:

@@ -20,6 +20,7 @@
 #include <stdexcept>
 #include <string>
 #include <algorithm>
+#include <map>
 
 #include "measure.h"
 
@@ -147,15 +148,16 @@ void Measure::setLabel(std::string label)
     auto value = measure.getValue(1999); // returns 12345678.9
 */
 
+//key is the year
 double Measure::getValue(int key)
 {
-  if (std::find(values.begin(), values.end(), this->key) != values.end())
+  if (values.find(key) == values.end())
   {
-    return this->value;
+    throw(std::out_of_range("No value found for year " + key));
   }
   else
   {
-    throw(std::out_of_range("No value found for year " + key));
+    return values.at(key);
   }
   return 0;
 }
@@ -187,6 +189,13 @@ void Measure::setValue(int key, double value)
 {
   this->key = key;
   this->value = value;
+  values.insert({key, value});
+
+  //overwrites the value for an already inserted year
+  if (this->getValue(key) != value)
+  {
+    values[key] = value;
+  }
 }
 
 /*
