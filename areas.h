@@ -52,8 +52,9 @@ using YearFilterTuple = std::tuple<unsigned int, unsigned int>;
   AreasContainer to a valid Standard Library container of your choosing.
 */
 
-//std::vector<Area> AreasContainer;
-using AreasContainer = std::vector<Area>();
+//std::vector<Area> areaContainer;
+using AreasContainer = std::vector<Area>;
+//using AreasContainer = std::unordered_set<Area>();
 
 /*
   Areas is a class that stores all the data categorised by area. The 
@@ -73,14 +74,15 @@ class Areas
 {
 private:
   std::string localAuthorityCode;
-  std::string area;
+  Area area;
+  std::vector<Area> areas;
 
 public:
   Areas();
 
   void setArea(std::string localAuthorityCode, std::string area);
 
-  std::string getArea(std::string localAuthorityCode);
+  Area getArea(std::string localAuthorityCode);
 
   int size();
 

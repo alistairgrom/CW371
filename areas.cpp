@@ -45,7 +45,8 @@ using json = nlohmann::json;
 */
 Areas::Areas()
 {
-
+  AreasContainer areas;
+  this->areas = areas;
   //throw std::logic_error("Areas::Areas() has not been implemented!");
 }
 
@@ -104,6 +105,19 @@ void Areas::setArea(std::string localAuthorityCode, std::string area)
     Area area2 = areas.getArea("W06000023");
 */
 
+Area Areas::getArea(std::string localAuthorityCode)
+{
+  // if (std::count(areas.begin(), areas.end(), area.getLocalAuthorityCode()))
+  // {
+  //   return area;
+  // }
+  // else
+  // {
+  //   throw(std::out_of_range("No area found matching junk"));
+  // }
+  return Area(localAuthorityCode);
+}
+
 /*
   TODO: Areas::size()
 
@@ -125,6 +139,7 @@ void Areas::setArea(std::string localAuthorityCode, std::string area)
 
 int Areas::size()
 {
+  return areas.size();
 }
 
 /*

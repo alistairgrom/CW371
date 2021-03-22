@@ -31,6 +31,9 @@
   @example
     Area("W06000023");
 */
+
+Area::Area() {}
+
 Area::Area(const std::string &localAuthorityCode)
 {
   this->localAuthorityCode = localAuthorityCode;
