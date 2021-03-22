@@ -43,7 +43,9 @@
 */
 Measure::Measure(std::string codename, const std::string &label)
 {
-  throw std::logic_error("Measure::Measure() has not been implemented!");
+  this->codename = codename;
+  this->label = label;
+  //throw std::logic_error("Measure::Measure() has not been implemented!");
 }
 
 /*
@@ -66,6 +68,11 @@ Measure::Measure(std::string codename, const std::string &label)
     auto codename2 = measure.getCodename();
 */
 
+std::string Measure::getCodename() const
+{
+  return codename;
+}
+
 /*
   TODO: Measure::getLabel()
 
@@ -86,6 +93,11 @@ Measure::Measure(std::string codename, const std::string &label)
     auto label = measure.getLabel();
 */
 
+std::string Measure::getLabel() const
+{
+  return label;
+}
+
 /*
   TODO: Measure::setLabel(label)
 
@@ -100,6 +112,11 @@ Measure::Measure(std::string codename, const std::string &label)
     ...
     measure.setLabel("New Population");
 */
+
+void Measure::setLabel(std::string label)
+{
+  this->label = label;
+}
 
 /*
   TODO: Measure::getValue(key)
@@ -170,6 +187,11 @@ Measure::Measure(std::string codename, const std::string &label)
     measure.setValue(1999, 12345678.9);
     auto size = measure.size(); // returns 1
 */
+
+int Measure::size() const
+{
+  return 0;
+}
 
 /*
   TODO: Measure::getDifference()

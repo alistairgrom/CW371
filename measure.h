@@ -26,7 +26,16 @@
 */
 class Measure
 {
+private:
+  std::string codename;
+  std::string label;
+
+public:
   Measure(std::string code, const std::string &label);
+  std::string getCodename() const;
+  std::string getLabel() const;
+  void setLabel(std::string label);
+  int size() const;
 };
 
 #endif // MEASURE_H_
