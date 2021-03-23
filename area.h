@@ -37,16 +37,17 @@ private:
   std::string langValueWelsh;
   std::string langValueEnglish;
 
-public:
   std::string localAuthorityCode;
   std::string langCode;
   std::string langValue;
 
+public:
   Area();
   Area(const std::string &localAuthorityCode);
   std::string getLocalAuthorityCode();
   std::string getName(std::string) const;
   void setName(std::string lang, std::string name);
+  int size();
 };
 
 #endif // AREA_H_

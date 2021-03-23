@@ -17,6 +17,10 @@
 */
 
 #include <stdexcept>
+#include <algorithm>
+#include <cctype>
+#include <string>
+#include <iostream>
 
 #include "area.h"
 
@@ -131,12 +135,17 @@ std::string Area::getName(std::string lang) const
 
 void Area::setName(std::string lang, std::string name)
 {
+  // convert string to lower case
+  std::for_each(lang.begin(), lang.end(), [](char &c) {
+    c = ::tolower(c);
+  });
+
   if (lang == "eng")
   {
     this->langCodeEnglish = lang;
     this->langValueEnglish = name;
   }
-  if (lang == "cym")
+  else if (lang == "cym")
   {
     this->langCodeWelsh = lang;
     this->langValueWelsh = name;
@@ -228,6 +237,11 @@ void Area::setName(std::string lang, std::string name)
     area.setMeasure(code, measure);
     auto size = area.size();
 */
+
+int Area::size()
+{
+  return 0;
+}
 
 /*
   TODO: operator<<(os, area)
