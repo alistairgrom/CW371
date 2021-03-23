@@ -43,6 +43,9 @@
     std::string label = "Population";
     Measure measure(codename, label);
 */
+
+Measure::Measure() {}
+
 Measure::Measure(std::string codename, const std::string &label)
 {
   this->codename = codename;
@@ -328,3 +331,12 @@ int Measure::size() const
     true if both Measure objects have the same codename, label and data; false
     otherwise
 */
+
+bool operator==(const Measure &m1, const Measure &m2)
+{
+  if (m1.getCodename() == m2.getCodename() && m1.getLabel() == m2.getLabel())
+  {
+    return true;
+  }
+  return false;
+}

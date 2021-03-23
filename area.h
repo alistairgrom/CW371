@@ -16,7 +16,8 @@
   functions and member variables you need to declare in this class.
  */
 
-#include <string>
+#include <string.h>
+#include <stdio.h>
 
 #include "measure.h"
 
@@ -29,6 +30,7 @@
   or functions you implement here, and perhaps additional operators you may wish
   to overload.
 */
+
 class Area
 {
 private:
@@ -41,13 +43,35 @@ private:
   std::string langCode;
   std::string langValue;
 
+  std::string codename;
+  Measure measure;
+
+  //allows for find() to be case insensitive
+  struct comp
+  {
+    bool operator()(const std::string &lhs, const std::string &rhs) const
+    {
+      return strcasecmp(lhs.c_str(), rhs.c_str()) < 0;
+    }
+  };
+
+  std::map<std::string, Measure, comp> measures;
+
 public:
   Area();
   Area(const std::string &localAuthorityCode);
   std::string getLocalAuthorityCode();
   std::string getName(std::string) const;
   void setName(std::string lang, std::string name);
-  int size();
+
+  void setMeasure(std::string codename, Measure measure);
+  Measure &getMeasure(std::string key);
+  int size() const;
+
+  bool compareChar(char &c1, char &c2);
+  bool caseInSensStringCompare(std::string &str1, std::string &str2);
+
+  friend bool operator==(const Area &a1, const Area &a2);
 };
 
 #endif // AREA_H_

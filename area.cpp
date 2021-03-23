@@ -181,6 +181,18 @@ void Area::setName(std::string lang, std::string name)
     auto measure2 = area.getMeasure("pop");
 */
 
+Measure &Area::getMeasure(std::string key)
+{
+  if (measures.find(key) == measures.end())
+  {
+    throw(std::out_of_range("No measure found matching " + key));
+  }
+  else
+  {
+    return measures.at(key);
+  }
+}
+
 /*
   TODO: Area::setMeasure(codename, measure)
 
@@ -214,6 +226,13 @@ void Area::setName(std::string lang, std::string name)
     area.setMeasure(codename, measure);
 */
 
+void Area::setMeasure(std::string codename, Measure measure)
+{
+  this->codename = codename;
+  this->measure = measure;
+  measures.insert({codename, measure});
+}
+
 /*
   TODO: Area::size()
 
@@ -238,9 +257,9 @@ void Area::setName(std::string lang, std::string name)
     auto size = area.size();
 */
 
-int Area::size()
+int Area::size() const
 {
-  return 0;
+  return measures.size();
 }
 
 /*
@@ -298,3 +317,8 @@ int Area::size()
 
     bool eq = area1 == area2;
 */
+
+bool operator==(const Area &a1, const Area &a2)
+{
+  return true;
+}

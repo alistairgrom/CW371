@@ -39,6 +39,7 @@ private:
   double value;
 
 public:
+  Measure();
   Measure(std::string code, const std::string &label);
   std::string getCodename() const;
 
@@ -49,6 +50,8 @@ public:
   void setValue(int key, double value);
 
   int size() const;
+
+  friend bool operator==(const Measure &m1, const Measure &m2);
 };
 
 #endif // MEASURE_H_
