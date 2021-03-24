@@ -205,7 +205,31 @@ void Areas::populateFromAuthorityCodeCSV(
 {
   // throw std::logic_error(
   //     "Areas::populateFromAuthorityCodeCSV() has not been implemented!");
-  std::cout << is.rdbuf();
+
+  Areas areas = Areas();
+  std::string engName, cymName;
+
+  getline(is, localAuthorityCode, ',');
+  getline(is, engName, ',');
+  getline(is, cymName, '\n');
+
+  // while (!is.eof())
+  // {
+
+  //   getline(is, localAuthorityCode, ',');
+  //   getline(is, engName, ',');
+  //   getline(is, cymName, '\n');
+
+  //   Area area(localAuthorityCode);
+  //   area.setName("eng", engName);
+  //   areas.setArea(localAuthorityCode, area);
+
+  // std::cout << "Area" << std::endl;
+  // std::cout << localAuthorityCode << std::endl;
+  // std::cout << engName << std::endl;
+  // std::cout << cymName << std::endl;
+  // std::cout << "END" << std::endl;
+}
 }
 
 /*
