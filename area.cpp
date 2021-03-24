@@ -21,6 +21,7 @@
 #include <cctype>
 #include <string>
 #include <iostream>
+#include <regex>
 
 #include "area.h"
 
@@ -140,6 +141,8 @@ void Area::setName(std::string lang, std::string name)
     c = ::tolower(c);
   });
 
+  bool contains_non_alpha = !std::regex_match(lang, std::regex("^[A-Za-z]+$"));
+
   if (lang == "eng")
   {
     this->langCodeEnglish = lang;
@@ -150,7 +153,8 @@ void Area::setName(std::string lang, std::string name)
     this->langCodeWelsh = lang;
     this->langValueWelsh = name;
   }
-  else if (lang.length() == 3)
+  //check that the code is only 3 long and doesnt contain non alpha chars
+  else if ((lang.length() == 3) && (!contains_non_alpha))
   {
   }
   else

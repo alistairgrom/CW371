@@ -230,7 +230,6 @@ void Areas::populateFromAuthorityCodeCSV(
   // std::cout << cymName << std::endl;
   // std::cout << "END" << std::endl;
 }
-}
 
 /*
   TODO: Areas::populateFromWelshStatsJSON(is,
