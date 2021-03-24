@@ -45,8 +45,7 @@ using json = nlohmann::json;
 */
 Areas::Areas()
 {
-  AreasContainer areas;
-  this->areas = areas;
+
   //throw std::logic_error("Areas::Areas() has not been implemented!");
 }
 
@@ -75,10 +74,17 @@ Areas::Areas()
     Area area(localAuthorityCode);
     data.setArea(localAuthorityCode, area);
 */
-void Areas::setArea(std::string localAuthorityCode, std::string area)
+void Areas::setArea(std::string localAuthorityCode, Area area)
 {
   this->localAuthorityCode = localAuthorityCode;
   this->area = area;
+
+  areas.insert({localAuthorityCode, area});
+
+  if (this->getArea(localAuthorityCode).getLocalAuthorityCode() != area.getLocalAuthorityCode())
+  {
+    areas[localAuthorityCode] = area;
+  }
 }
 
 /*
@@ -105,17 +111,16 @@ void Areas::setArea(std::string localAuthorityCode, std::string area)
     Area area2 = areas.getArea("W06000023");
 */
 
-Area Areas::getArea(std::string localAuthorityCode)
+Area &Areas::getArea(std::string localAuthorityCode)
 {
-  // if (std::count(areas.begin(), areas.end(), area.getLocalAuthorityCode()))
-  // {
-  //   return area;
-  // }
-  // else
-  // {
-  //   throw(std::out_of_range("No area found matching junk"));
-  // }
-  return Area(localAuthorityCode);
+  if (areas.find(localAuthorityCode) == areas.end())
+  {
+    throw(std::out_of_range("No area found matching " + localAuthorityCode));
+  }
+  else
+  {
+    return areas.at(localAuthorityCode);
+  }
 }
 
 /*

@@ -76,14 +76,14 @@ class Areas
 private:
   std::string localAuthorityCode;
   Area area;
-  std::vector<Area> areas;
+  std::map<std::string, Area> areas;
 
 public:
   Areas();
 
-  void setArea(std::string localAuthorityCode, std::string area);
+  void setArea(std::string localAuthorityCode, Area area);
 
-  Area getArea(std::string localAuthorityCode);
+  Area &getArea(std::string localAuthorityCode);
 
   int size();
 

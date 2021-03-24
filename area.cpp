@@ -150,6 +150,9 @@ void Area::setName(std::string lang, std::string name)
     this->langCodeWelsh = lang;
     this->langValueWelsh = name;
   }
+  else if (lang.length() == 3)
+  {
+  }
   else
   {
     throw(std::invalid_argument("Area::setName: Language code must be three alphabetical letters only"));
