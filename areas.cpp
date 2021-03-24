@@ -47,7 +47,6 @@ Areas::Areas()
 {
   ///Areas areas;
   //AreasContainer areasContainer;
-  //throw std::logic_error("Areas::Areas() has not been implemented!");
 }
 
 /*
@@ -553,23 +552,23 @@ void Areas::populate(std::istream &is,
       &measuresFilter,
       &yearsFilter);
 */
-void Areas::populate(
-    std::istream &is,
-    const BethYw::SourceDataType &type,
-    const BethYw::SourceColumnMapping &cols,
-    const StringFilterSet *const areasFilter,
-    const StringFilterSet *const measuresFilter,
-    const YearFilterTuple *const yearsFilter)
-{
-  if (type == BethYw::AuthorityCodeCSV)
-  {
-    populateFromAuthorityCodeCSV(is, cols, areasFilter);
-  }
-  else
-  {
-    throw std::runtime_error("Areas::populate: Unexpected data type");
-  }
-}
+// void Areas::populate(
+//     std::istream &is,
+//     const BethYw::SourceDataType &type,
+//     const BethYw::SourceColumnMapping &cols,
+//     const StringFilterSet *const areasFilter,
+//     const StringFilterSet *const measuresFilter,
+//     const YearFilterTuple *const yearsFilter)
+// {
+//   if (type == BethYw::AuthorityCodeCSV)
+//   {
+//     populateFromAuthorityCodeCSV(is, cols, areasFilter);
+//   }
+//   else
+//   {
+//     throw std::runtime_error("Areas::populate: Unexpected data type");
+//   }
+// }
 
 /*
   TODO: Areas::toJSON()

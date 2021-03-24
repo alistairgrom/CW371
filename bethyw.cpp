@@ -22,6 +22,7 @@
 */
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <tuple>
 #include <unordered_set>
@@ -69,7 +70,7 @@ int BethYw::run(int argc, char *argv[])
   auto datasetsToImport = BethYw::parseDatasetsArg(args);
   auto areasFilter = BethYw::parseAreasArg(args);
   auto measuresFilter = BethYw::parseMeasuresArg(args);
-  auto yearsFilter = BethYw::parseYearsArg(args);
+  //auto yearsFilter = BethYw::parseYearsArg(args);
 
   Areas data = Areas();
 
@@ -287,61 +288,6 @@ std::unordered_set<std::string> BethYw::parseAreasArg(
   }
 
   return areas;
-
-  //std::cout << temp[0] << ": " << "" << std::endl;
-  // std::string area_array[24];
-
-  // for (unsigned int i = 1; i < 25; i++)
-  // {
-  //   std::string areaString;
-  //   std::stringstream ss;
-  //   if (i < 10)
-  //   {
-  //     ss << "W060000"
-  //        << "0" << i;
-  //     areaString = ss.str();
-  //   }
-  //   else
-  //   {
-  //     ss << "W060000" << i;
-  //     areaString = ss.str();
-  //   }
-  //   area_array[i - 1] = areaString;
-  //   //std::cout << area_array[i - 1] << std::endl;
-  // }
-
-  // bool all_added = false;
-  // for (unsigned int i = 0; i < areas_args.size(); i++)
-  // {
-  //   if (areas_args[i] == "all")
-  //   {
-
-  //     all_added = true;
-  //   }
-  //   return areas;
-  // }
-
-  // if (!all_added)
-  // {
-
-  //   for (unsigned int i = 0; i < areas_args.size(); i++)
-  //   {
-  //     //std::cout << areas_args[i] << ": "<< "" << std::endl;
-  //     for (unsigned int j = 0; j < 23; j++)
-  //     {
-  //       std::cout << areas_args[i] << std::endl;
-  //       std::cout << area_array[j] << std::endl;
-  //       if ((areas_args[i] == area_array[j]))
-  //       {
-  //         areas.insert(areas_args[i]);
-  //       }
-  //       else
-  //         throw(std::invalid_argument("Invalid input for area argument"));
-  //     }
-  //   }
-
-  //   return areas;
-  // }
 }
 
 /*
@@ -419,27 +365,6 @@ std::tuple<unsigned int, unsigned int> BethYw::parseYearsArg(cxxopts::ParseResul
   std::tuple<unsigned int, unsigned int> years;
   auto temp = args["years"].as<std::string>();
 
-  // if (temp.size() == 4)
-  // {
-  //   unsigned int year_int = std::stoi(temp);
-
-  //   years = std::make_tuple(year_int, year_int);
-  // }
-  // else if (temp.size() == 9)
-  // {
-  //   std::string year_str1 = temp.substr(1, 4);
-  //   unsigned int year_int1 = std::stoi(year_str1);
-
-  //   std::string year_str2 = temp.substr(5, 9);
-  //   unsigned int year_int2 = std::stoi(year_str2);
-
-  //   years = std::make_tuple(year_int1, year_int2);
-  // }
-  // else
-  // {
-  //    throw(std::invalid_argument("Invalid input for years argument"));
-  // }
-
   for (unsigned int i = 0; i < temp.size(); i++)
   {
     if (isdigit(temp[i]) || (temp[i] == '-'))
@@ -509,6 +434,11 @@ std::tuple<unsigned int, unsigned int> BethYw::parseYearsArg(cxxopts::ParseResul
 
 void BethYw::loadAreas(Areas areas, std::string dir, std::unordered_set<std::string> areasFilter)
 {
+  std::cout << "loadAreas" << std::endl;
+  InputFile input(dir + "areas.csv");
+  SourceColumnMapping cols = InputFiles::AREAS.COLS;
+
+  areas.populate(input.open(), AuthorityCodeCSV, cols);
 }
 
 /*
