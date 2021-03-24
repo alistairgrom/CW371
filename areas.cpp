@@ -45,7 +45,8 @@ using json = nlohmann::json;
 */
 Areas::Areas()
 {
-
+  ///Areas areas;
+  //AreasContainer areasContainer;
   //throw std::logic_error("Areas::Areas() has not been implemented!");
 }
 
@@ -78,12 +79,13 @@ void Areas::setArea(std::string localAuthorityCode, Area area)
 {
   this->localAuthorityCode = localAuthorityCode;
   this->area = area;
+  this->areasContainer = areasContainer;
 
-  areas.insert({localAuthorityCode, area});
+  this->areasContainer.insert({localAuthorityCode, area});
 
-  if (this->getArea(localAuthorityCode).getLocalAuthorityCode() != area.getLocalAuthorityCode())
+  if (getArea(localAuthorityCode).getLocalAuthorityCode() != area.getLocalAuthorityCode())
   {
-    areas[localAuthorityCode] = area;
+    areasContainer[localAuthorityCode] = area;
   }
 }
 
@@ -113,13 +115,13 @@ void Areas::setArea(std::string localAuthorityCode, Area area)
 
 Area &Areas::getArea(std::string localAuthorityCode)
 {
-  if (areas.find(localAuthorityCode) == areas.end())
+  if (this->areasContainer.find(localAuthorityCode) == this->areasContainer.end())
   {
     throw(std::out_of_range("No area found matching " + localAuthorityCode));
   }
   else
   {
-    return areas.at(localAuthorityCode);
+    return this->areasContainer.at(localAuthorityCode);
   }
 }
 
@@ -142,13 +144,13 @@ Area &Areas::getArea(std::string localAuthorityCode)
     auto size = areas.size(); // returns 1
 */
 
-int Areas::size()
+int Areas::size() const
 {
-  return areas.size();
+  return this->areasContainer.size();
 }
 
 /*
-  TODO: Areas::populateFromAuthorityCodeCSV(is, cols, areasFilter)
+  TODO: Areas::populateFromAuthorityCodeCSV(is, cols, areasFilter, measuresFilter)
 
   This function specifically parses the compiled areas.csv file of local 
   authority codes, and their names in English and Welsh.
@@ -172,6 +174,10 @@ int Areas::size()
 
   @param areasFilter
     An umodifiable pointer to set of umodifiable strings for areas to import,
+    or an empty set if all areas should be imported
+
+  @param measuresFilter
+    An umodifiable pointer to set of umodifiable strings for measures to import,
     or an empty set if all areas should be imported
 
   @return
@@ -201,34 +207,31 @@ int Areas::size()
 void Areas::populateFromAuthorityCodeCSV(
     std::istream &is,
     const BethYw::SourceColumnMapping &cols,
-    const StringFilterSet *const areasFilter)
+    const StringFilterSet *const areasFilter,
+    const StringFilterSet *const measuresFilter)
 {
   // throw std::logic_error(
   //     "Areas::populateFromAuthorityCodeCSV() has not been implemented!");
 
-  Areas areas = Areas();
   std::string engName, cymName;
 
   getline(is, localAuthorityCode, ',');
   getline(is, engName, ',');
   getline(is, cymName, '\n');
 
-  // while (!is.eof())
-  // {
+  while (!is.eof())
+  {
 
-  //   getline(is, localAuthorityCode, ',');
-  //   getline(is, engName, ',');
-  //   getline(is, cymName, '\n');
+    getline(is, localAuthorityCode, ',');
+    getline(is, engName, ',');
+    getline(is, cymName, '\n');
 
-  //   Area area(localAuthorityCode);
-  //   area.setName("eng", engName);
-  //   areas.setArea(localAuthorityCode, area);
-
-  // std::cout << "Area" << std::endl;
-  // std::cout << localAuthorityCode << std::endl;
-  // std::cout << engName << std::endl;
-  // std::cout << cymName << std::endl;
-  // std::cout << "END" << std::endl;
+    Area area(localAuthorityCode);
+    area.setName("eng", engName);
+    area.setName("cym", cymName);
+    this->setArea(localAuthorityCode, area);
+  }
+  //std::cout << "cols size: " << cols.size() << std::endl;
 }
 
 /*

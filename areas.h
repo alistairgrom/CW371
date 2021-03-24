@@ -54,7 +54,7 @@ using YearFilterTuple = std::tuple<unsigned int, unsigned int>;
 */
 
 //std::vector<Area> areaContainer;
-using AreasContainer = std::vector<Area>;
+using AreasContainer = std::map<std::string, Area>;
 //using AreasContainer = std::unordered_set<Area>();
 
 /*
@@ -76,7 +76,7 @@ class Areas
 private:
   std::string localAuthorityCode;
   Area area;
-  std::map<std::string, Area> areas;
+  AreasContainer areasContainer;
 
 public:
   Areas();
@@ -85,12 +85,13 @@ public:
 
   Area &getArea(std::string localAuthorityCode);
 
-  int size();
+  int size() const;
 
   void populateFromAuthorityCodeCSV(
       std::istream &is,
       const BethYw::SourceColumnMapping &cols,
-      const StringFilterSet *const areas = nullptr) noexcept(false);
+      const StringFilterSet *const areas = nullptr,
+      const StringFilterSet *const measuresFilter = nullptr) noexcept(false);
 
   void populate(
       std::istream &is,

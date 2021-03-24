@@ -69,12 +69,12 @@ int BethYw::run(int argc, char *argv[])
   auto datasetsToImport = BethYw::parseDatasetsArg(args);
   auto areasFilter = BethYw::parseAreasArg(args);
   auto measuresFilter = BethYw::parseMeasuresArg(args);
-  //auto yearsFilter = BethYw::parseYearsArg(args);
+  auto yearsFilter = BethYw::parseYearsArg(args);
 
   Areas data = Areas();
 
-  // BethYw::loadAreas(data, dir, areasFilter);
-  //
+  BethYw::loadAreas(data, dir, areasFilter);
+
   // BethYw::loadDatasets(data,
   //                      dir,
   //                      datasetsToImport,
@@ -506,6 +506,10 @@ std::tuple<unsigned int, unsigned int> BethYw::parseYearsArg(cxxopts::ParseResul
 
     BethYw::loadAreas(areas, "data", BethYw::parseAreasArg(args));
 */
+
+void BethYw::loadAreas(Areas areas, std::string dir, std::unordered_set<std::string> areasFilter)
+{
+}
 
 /*
   TODO: BethYw::loadDatasets(areas,

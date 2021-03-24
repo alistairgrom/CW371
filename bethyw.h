@@ -21,6 +21,7 @@
 
 #include "lib_cxxopts.hpp"
 
+#include "areas.h"
 #include "datasets.h"
 
 const char DIR_SEP =
@@ -47,6 +48,8 @@ namespace BethYw
   Create a cxxopts instance.
 */
   cxxopts::Options cxxoptsSetup();
+
+  void loadAreas(Areas data, std::string dir, std::unordered_set<std::string> areasFilter);
 
   /*
   Parse the datasets argument and return a std::vector of all the datasets
