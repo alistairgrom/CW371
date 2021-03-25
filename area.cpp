@@ -42,8 +42,6 @@ Area::Area() {}
 Area::Area(const std::string &localAuthorityCode)
 {
   this->localAuthorityCode = localAuthorityCode;
-
-  //throw std::logic_error("Area::Area() has not been implemented!");
 }
 
 /*

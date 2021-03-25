@@ -52,6 +52,11 @@ public:
   int size() const;
 
   friend bool operator==(const Measure &m1, const Measure &m2);
+  friend std::ostream &operator<<(std::ostream &os, Measure measure);
+
+  double getDifference() const;
+  double getDifferenceAsPercentage() const;
+  double getAverage() const;
 };
 
 #endif // MEASURE_H_

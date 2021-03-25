@@ -21,6 +21,8 @@
 #include <string>
 #include <algorithm>
 #include <map>
+#include <cstdlib>
+#include <iostream>
 
 #include "measure.h"
 
@@ -243,6 +245,20 @@ int Measure::size() const
     auto diff = measure.getDifference(); // returns 1.0
 */
 
+double Measure::getDifference() const
+{
+  if (values.size() > 1)
+  {
+    double first = values.begin()->second;
+    double last = values.begin()->second;
+    return std::abs(first - last);
+  }
+  else
+  {
+    return 0;
+  }
+}
+
 /*
   TODO: Measure::getDifferenceAsPercentage()
 
@@ -261,6 +277,21 @@ int Measure::size() const
     auto diff = measure.getDifferenceAsPercentage();
 */
 
+double Measure::getDifferenceAsPercentage() const
+{
+  if (values.size() > 1)
+  {
+    double first = values.begin()->second;
+    //double last = values.begin()->second;
+
+    return (this->getDifference() / first) * 100;
+  }
+  else
+  {
+    return 0;
+  }
+}
+
 /*
   TODO: Measure::getAverage()
 
@@ -277,6 +308,26 @@ int Measure::size() const
     measure.setValue(1999, 12345679.9);
     auto diff = measure.getDifference(); // returns 1
 */
+
+double Measure::getAverage() const
+{
+  int count = 0;
+  bool sum;
+  if (values.size() > 0)
+  {
+    for (std::map<int, double>::const_iterator it = values.begin();
+         it != values.end() && it->first < value; ++it, ++count)
+    {
+      sum += it->second;
+    }
+    bool avg = sum / count;
+    return avg;
+  }
+  else
+  {
+    return 0;
+  }
+}
 
 /*
   TODO: operator<<(os, measure)
@@ -314,6 +365,20 @@ int Measure::size() const
     measure.setValue(1999, 12345678.9);
     std::cout << measure << std::end;
 */
+
+std::ostream &operator<<(std::ostream &os, Measure measure)
+{
+  auto &data = measure.values;
+  // auto it = data.begin();
+
+  for (auto &i : data)
+  {
+    os << i.first;
+    os << std::endl;
+  }
+
+  return os;
+}
 
 /*
   TODO: operator==(lhs, rhs)

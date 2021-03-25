@@ -106,6 +106,13 @@ public:
   //     const StringFilterSet *const measuresFilter = nullptr,
   //     const YearFilterTuple *const yearsFilter = nullptr) noexcept(false);
 
+  void populateFromWelshStatsJSON(
+      std::istream &is,
+      const BethYw::SourceColumnMapping &cols,
+      const StringFilterSet *const areasFilter = nullptr,
+      const StringFilterSet *const measuresFilter = nullptr,
+      const YearFilterTuple *const yearsFilter = nullptr) noexcept(false);
+
   std::string toJSON() const;
 };
 

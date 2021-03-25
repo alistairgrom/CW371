@@ -22,4 +22,4 @@
 #include "test9.cpp"
 #include "test10.cpp"
 #include "test11.cpp"
-// #include "test12.cpp"
+#include "test12.cpp"

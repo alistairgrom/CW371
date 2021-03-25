@@ -43,11 +43,7 @@ using json = nlohmann::json;
   @example
     Areas data = Areas();
 */
-Areas::Areas()
-{
-  ///Areas areas;
-  //AreasContainer areasContainer;
-}
+Areas::Areas() {}
 
 /*
   TODO: Areas::setArea(localAuthorityCode, area)
@@ -209,9 +205,6 @@ void Areas::populateFromAuthorityCodeCSV(
     const StringFilterSet *const areasFilter,
     const StringFilterSet *const measuresFilter)
 {
-  // throw std::logic_error(
-  //     "Areas::populateFromAuthorityCodeCSV() has not been implemented!");
-
   std::string engName, cymName;
 
   getline(is, localAuthorityCode, ',');
@@ -337,6 +330,15 @@ void Areas::populateFromAuthorityCodeCSV(
       &measuresFilter,
       &yearsFilter);
 */
+
+void Areas::populateFromWelshStatsJSON(
+    std::istream &is,
+    const BethYw::SourceColumnMapping &cols,
+    const StringFilterSet *const areasFilter,
+    const StringFilterSet *const measuresFilter,
+    const YearFilterTuple *const yearsFilter)
+{
+}
 
 /*
   TODO: Areas::populateFromAuthorityByYearCSV(is,
