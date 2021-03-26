@@ -50,6 +50,10 @@ Measure::Measure() {}
 
 Measure::Measure(std::string codename, const std::string &label)
 {
+
+  std::for_each(codename.begin(), codename.end(), [](char &c) {
+    c = ::tolower(c);
+  });
   this->codename = codename;
   this->label = label;
   //throw std::logic_error("Measure::Measure() has not been implemented!");
@@ -158,7 +162,7 @@ double Measure::getValue(int key)
 {
   if (values.find(key) == values.end())
   {
-    throw(std::out_of_range("No value found for year " + key));
+    throw(std::out_of_range("No value found for year " + std::to_string(key)));
   }
   else
   {
@@ -369,11 +373,12 @@ double Measure::getAverage() const
 std::ostream &operator<<(std::ostream &os, Measure measure)
 {
   auto &data = measure.values;
-  // auto it = data.begin();
+  auto it = data.begin();
 
-  for (auto &i : data)
+  for (auto &it : data)
   {
-    os << i.first;
+    os << it.first;
+    os << it.second;
     os << std::endl;
   }
 

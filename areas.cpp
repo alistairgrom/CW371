@@ -338,6 +338,48 @@ void Areas::populateFromWelshStatsJSON(
     const StringFilterSet *const measuresFilter,
     const YearFilterTuple *const yearsFilter)
 {
+  json j;
+  is >> j;
+
+  for (auto &el : j["value"].items())
+  {
+    auto &data = el.value();
+
+    std::string columnLocalAuthorityCode = cols.at(BethYw::AUTH_CODE);
+    std::string localAuthorityCode = data[columnLocalAuthorityCode];
+
+    std::string columnAuthorityNameENG = cols.at(BethYw::AUTH_NAME_ENG);
+    std::string authorityNameENG = data[columnAuthorityNameENG];
+
+    std::string columnMeasureCode = cols.at(BethYw::MEASURE_CODE);
+    std::string measureCode = data[columnMeasureCode];
+
+    std::string columnMeasureName = cols.at(BethYw::MEASURE_NAME);
+    std::string measureName = data[columnMeasureCode];
+
+    std::string columnYearCode = cols.at(BethYw::YEAR);
+    std::string yearCode = data[columnYearCode];
+
+    std::string::size_type sz;
+    int yearCodeInt = std::stoi(yearCode, &sz);
+
+    std::string columnDataValue = cols.at(BethYw::VALUE);
+    auto &dataValue = data[columnDataValue];
+    double dataValueDouble = dataValue;
+
+    //Area area(localAuthorityCode);
+
+    Measure measure(measureCode, measureName);
+    measure.setValue(yearCodeInt, dataValueDouble);
+
+    area.setName("eng", authorityNameENG);
+
+    this->setArea(localAuthorityCode, area);
+    this->getArea(localAuthorityCode).setMeasure(measureCode, measure);
+
+    //std::cout << this->getArea(localAuthorityCode).getMeasure(measureCode) << " ";
+    //std::cout << measure.getLabel() << " " << measure.getValue(yearCodeInt);
+  }
 }
 
 /*

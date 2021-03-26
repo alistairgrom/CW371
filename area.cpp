@@ -42,6 +42,7 @@ Area::Area() {}
 Area::Area(const std::string &localAuthorityCode)
 {
   this->localAuthorityCode = localAuthorityCode;
+  Measure measure();
 }
 
 /*
