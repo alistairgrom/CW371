@@ -55,8 +55,6 @@ private:
     }
   };
 
-  std::map<std::string, Measure, comp> measures;
-
 public:
   Area();
   Area(const std::string &localAuthorityCode);
@@ -67,6 +65,7 @@ public:
   void setMeasure(std::string codename, Measure measure);
   Measure &getMeasure(std::string key);
   int size() const;
+  std::map<std::string, Measure, comp> measures;
 
   bool compareChar(char &c1, char &c2);
   bool caseInSensStringCompare(std::string &str1, std::string &str2);

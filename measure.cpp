@@ -48,7 +48,7 @@
 
 Measure::Measure() {}
 
-Measure::Measure(std::string codename, const std::string &label)
+Measure::Measure(std::string codename, const std::string label)
 {
 
   std::for_each(codename.begin(), codename.end(), [](char &c) {
@@ -373,7 +373,7 @@ double Measure::getAverage() const
 std::ostream &operator<<(std::ostream &os, Measure measure)
 {
   auto &data = measure.values;
-  auto it = data.begin();
+  //auto it = data.begin();
 
   for (auto &it : data)
   {

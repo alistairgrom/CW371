@@ -141,7 +141,7 @@ Area &Areas::getArea(std::string localAuthorityCode)
 
 int Areas::size() const
 {
-  return this->areasContainer.size();
+  return areasContainer.size();
 }
 
 /*
@@ -355,11 +355,10 @@ void Areas::populateFromWelshStatsJSON(
     std::string measureCode = data[columnMeasureCode];
 
     std::string columnMeasureName = cols.at(BethYw::MEASURE_NAME);
-    std::string measureName = data[columnMeasureCode];
+    std::string measureName = data[columnMeasureName];
 
     std::string columnYearCode = cols.at(BethYw::YEAR);
     std::string yearCode = data[columnYearCode];
-
     std::string::size_type sz;
     int yearCodeInt = std::stoi(yearCode, &sz);
 
@@ -367,18 +366,16 @@ void Areas::populateFromWelshStatsJSON(
     auto &dataValue = data[columnDataValue];
     double dataValueDouble = dataValue;
 
-    //Area area(localAuthorityCode);
-
+    //--------------------------------------------------------------------//
     Measure measure(measureCode, measureName);
-    measure.setValue(yearCodeInt, dataValueDouble);
-
+    area.setMeasure(measureCode, measure);
     area.setName("eng", authorityNameENG);
-
     this->setArea(localAuthorityCode, area);
     this->getArea(localAuthorityCode).setMeasure(measureCode, measure);
+    this->getArea(localAuthorityCode).getMeasure(measureCode).setValue(yearCodeInt, dataValueDouble);
 
-    //std::cout << this->getArea(localAuthorityCode).getMeasure(measureCode) << " ";
-    //std::cout << measure.getLabel() << " " << measure.getValue(yearCodeInt);
+    //std::cout << this->getArea(localAuthorityCode).getLocalAuthorityCode() << " " << this->getArea(localAuthorityCode).getMeasure(measureCode).getCodename() << " " << this->getArea(localAuthorityCode).getMeasure(measureCode);
+    //std::cout << " " << this->getArea(localAuthorityCode).getMeasure(measureCode).size();
   }
 }
 

@@ -42,7 +42,6 @@ Area::Area() {}
 Area::Area(const std::string &localAuthorityCode)
 {
   this->localAuthorityCode = localAuthorityCode;
-  Measure measure();
 }
 
 /*
@@ -189,6 +188,10 @@ void Area::setName(std::string lang, std::string name)
 
 Measure &Area::getMeasure(std::string key)
 {
+  std::for_each(key.begin(), key.end(), [](char &c) {
+    c = ::tolower(c);
+  });
+
   if (measures.find(key) == measures.end())
   {
     throw(std::out_of_range("No measure found matching " + key));
@@ -234,9 +237,18 @@ Measure &Area::getMeasure(std::string key)
 
 void Area::setMeasure(std::string codename, Measure measure)
 {
+  std::for_each(codename.begin(), codename.end(), [](char &c) {
+    c = ::tolower(c);
+  });
   this->codename = codename;
-  this->measure = measure;
+  // this->measure = measure;
+
   measures.insert({codename, measure});
+
+  if (getMeasure(codename).getCodename() != measure.getCodename())
+  {
+    measures[codename] = measure;
+  }
 }
 
 /*
@@ -326,5 +338,5 @@ int Area::size() const
 
 bool operator==(const Area &a1, const Area &a2)
 {
-  return true;
+  return (a1.localAuthorityCode == a2.localAuthorityCode);
 }

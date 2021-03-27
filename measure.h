@@ -40,7 +40,7 @@ private:
 
 public:
   Measure();
-  Measure(std::string code, const std::string &label);
+  Measure(std::string code, const std::string label);
   std::string getCodename() const;
 
   std::string getLabel() const;
