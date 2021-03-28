@@ -379,7 +379,8 @@ void Areas::populateFromWelshStatsJSON(
     int yearFrom = std::get<0>(*yearsFilter);
     int yearTo = std::get<1>(*yearsFilter);
 
-    if (areasFilter->empty())
+    //no filters
+    if (areasFilter->empty() && measuresFilter->empty() && yearFrom == 0)
     {
       Measure measure(measureCode, measureName);
       area.setMeasure(measureCode, measure);
@@ -391,7 +392,7 @@ void Areas::populateFromWelshStatsJSON(
     }
 
     //if only a area filter
-    else if (!areasFilter->empty() && measuresFilter->empty())
+    else if (!areasFilter->empty() && measuresFilter->empty() && yearFrom == 0)
     {
       if (gotArea == areasFilter->end())
       {
@@ -409,7 +410,7 @@ void Areas::populateFromWelshStatsJSON(
     }
 
     //if only a measure filter
-    else if (areasFilter->empty() && !measuresFilter->empty())
+    else if (areasFilter->empty() && !measuresFilter->empty() && yearFrom == 0)
     {
       if (gotMeasure == measuresFilter->end())
       {
@@ -427,7 +428,23 @@ void Areas::populateFromWelshStatsJSON(
       }
     }
 
-    //both a measure filter and an area filter
+    //if only a year filter
+    else if (areasFilter->empty() && measuresFilter->empty() && yearFrom != 0)
+    {
+      if (yearCodeInt >= yearFrom && yearCodeInt <= yearTo)
+      {
+
+        Measure measure(measureCode, measureName);
+        area.setMeasure(measureCode, measure);
+        area.setName("eng", authorityNameENG);
+
+        this->setArea(localAuthorityCode, area);
+        this->getArea(localAuthorityCode).setMeasure(measureCode, measure);
+        this->getArea(localAuthorityCode).getMeasure(measureCode).setValue(yearCodeInt, dataValueDouble);
+      }
+    }
+
+    //both a measure filter and an area filter no year filter
     else if ((!areasFilter->empty() && !measuresFilter->empty() && yearFrom == 0))
     {
       if (gotArea == areasFilter->end())
@@ -451,6 +468,51 @@ void Areas::populateFromWelshStatsJSON(
       }
     }
 
+    //both an area filter and year filter
+    else if ((!areasFilter->empty() && measuresFilter->empty() && yearFrom != 0))
+    {
+      if (gotArea == areasFilter->end())
+      {
+      }
+      else
+      {
+        if (yearCodeInt >= yearFrom && yearCodeInt <= yearTo)
+        {
+
+          Measure measure(measureCode, measureName);
+          area.setMeasure(measureCode, measure);
+          area.setName("eng", authorityNameENG);
+
+          this->setArea(localAuthorityCode, area);
+          this->getArea(localAuthorityCode).setMeasure(measureCode, measure);
+          this->getArea(localAuthorityCode).getMeasure(measureCode).setValue(yearCodeInt, dataValueDouble);
+        }
+      }
+    }
+
+    //both an measure filter and year filter
+    else if ((areasFilter->empty() && !measuresFilter->empty() && yearFrom != 0))
+    {
+      if (gotMeasure == measuresFilter->end())
+      {
+      }
+      else
+      {
+        if (yearCodeInt >= yearFrom && yearCodeInt <= yearTo)
+        {
+
+          Measure measure(measureCode, measureName);
+          area.setMeasure(measureCode, measure);
+          area.setName("eng", authorityNameENG);
+
+          this->setArea(localAuthorityCode, area);
+          this->getArea(localAuthorityCode).setMeasure(measureCode, measure);
+          this->getArea(localAuthorityCode).getMeasure(measureCode).setValue(yearCodeInt, dataValueDouble);
+        }
+      }
+    }
+
+    //area, measure, year filter
     else if ((!areasFilter->empty()) && (!measuresFilter->empty()) && yearFrom != 0)
     {
       if (gotArea == areasFilter->end())
@@ -597,6 +659,7 @@ void Areas::populateFromWelshStatsJSON(
       DataType::WelshStatsJSON,
       cols);
 */
+
 void Areas::populate(std::istream &is,
                      const BethYw::SourceDataType &type,
                      const BethYw::SourceColumnMapping &cols)
