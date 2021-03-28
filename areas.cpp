@@ -368,27 +368,16 @@ void Areas::populateFromWelshStatsJSON(
 
     //--------------------------------------------------------------------//
 
-    std::string areaFilterResult;
-    std::string measureFilterResult;
-
-    for (auto it = areasFilter->begin(); it != areasFilter->end(); ++it)
-    {
-      areaFilterResult = *it;
-      //std::cout << *it + " ";
-    }
-    for (auto it = measuresFilter->begin(); it != measuresFilter->end(); ++it)
-    {
-      measureFilterResult = *it;
-    }
-
     //std::cout << areaFilterResult << " : " << measureFilterResult << std::endl;
-    std::unordered_set<std::string>::const_iterator got = areasFilter->find(localAuthorityCode);
+    std::unordered_set<std::string>::const_iterator gotArea = areasFilter->find(localAuthorityCode);
 
     std::for_each(measureCode.begin(), measureCode.end(), [](char &c) {
       c = ::tolower(c);
     });
 
-    std::unordered_set<std::string>::const_iterator got2 = measuresFilter->find(measureCode);
+    std::unordered_set<std::string>::const_iterator gotMeasure = measuresFilter->find(measureCode);
+    int yearFrom = std::get<0>(*yearsFilter);
+    int yearTo = std::get<1>(*yearsFilter);
 
     if (areasFilter->empty())
     {
@@ -404,7 +393,25 @@ void Areas::populateFromWelshStatsJSON(
     //if only a area filter
     else if (!areasFilter->empty() && measuresFilter->empty())
     {
-      if (got == areasFilter->end())
+      if (gotArea == areasFilter->end())
+      {
+      }
+      else
+      {
+        Measure measure(measureCode, measureName);
+        area.setMeasure(measureCode, measure);
+        area.setName("eng", authorityNameENG);
+
+        this->setArea(localAuthorityCode, area);
+        this->getArea(localAuthorityCode).setMeasure(measureCode, measure);
+        this->getArea(localAuthorityCode).getMeasure(measureCode).setValue(yearCodeInt, dataValueDouble);
+      }
+    }
+
+    //if only a measure filter
+    else if (areasFilter->empty() && !measuresFilter->empty())
+    {
+      if (gotMeasure == measuresFilter->end())
       {
       }
       else
@@ -421,14 +428,14 @@ void Areas::populateFromWelshStatsJSON(
     }
 
     //both a measure filter and an area filter
-    else if ((!areasFilter->empty() && !measuresFilter->empty()))
+    else if ((!areasFilter->empty() && !measuresFilter->empty() && yearFrom == 0))
     {
-      if (got == areasFilter->end())
+      if (gotArea == areasFilter->end())
       {
       }
       else
       {
-        if (got2 == measuresFilter->end())
+        if (gotMeasure == measuresFilter->end())
         {
         }
         else
@@ -444,30 +451,31 @@ void Areas::populateFromWelshStatsJSON(
       }
     }
 
-    //   if (!areasFilter->empty())
-    //   {
-    //     if (areaFilterResult == localAuthorityCode)
-    //     {
-    //       Measure measure(measureCode, measureName);
-    //       area.setMeasure(measureCode, measure);
-    //       area.setName("eng", authorityNameENG);
+    else if ((!areasFilter->empty()) && (!measuresFilter->empty()) && yearFrom != 0)
+    {
+      if (gotArea == areasFilter->end())
+      {
+      }
+      else
+      {
+        if (gotMeasure == measuresFilter->end())
+        {
+        }
+        else
+        {
+          if (yearCodeInt >= yearFrom && yearCodeInt <= yearTo)
+          {
+            Measure measure(measureCode, measureName);
+            area.setMeasure(measureCode, measure);
+            area.setName("eng", authorityNameENG);
 
-    //       this->setArea(localAuthorityCode, area);
-    //       this->getArea(localAuthorityCode).setMeasure(measureCode, measure);
-    //       this->getArea(localAuthorityCode).getMeasure(measureCode).setValue(yearCodeInt, dataValueDouble);
-    //     }
-    //   }
-    //   else
-    //   {
-    //     Measure measure(measureCode, measureName);
-    //     area.setMeasure(measureCode, measure);
-    //     area.setName("eng", authorityNameENG);
-
-    //     this->setArea(localAuthorityCode, area);
-    //     this->getArea(localAuthorityCode).setMeasure(measureCode, measure);
-    //     this->getArea(localAuthorityCode).getMeasure(measureCode).setValue(yearCodeInt, dataValueDouble);
-    //   }
-    // }
+            this->setArea(localAuthorityCode, area);
+            this->getArea(localAuthorityCode).setMeasure(measureCode, measure);
+            this->getArea(localAuthorityCode).getMeasure(measureCode).setValue(yearCodeInt, dataValueDouble);
+          }
+        }
+      }
+    }
   }
 }
 

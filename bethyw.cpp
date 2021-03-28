@@ -399,7 +399,7 @@ std::tuple<unsigned int, unsigned int> BethYw::parseYearsArg(cxxopts::ParseResul
       throw(std::invalid_argument("Invalid input for years argument"));
     }
   }
-
+  //std::cout << std::get<0>(years) << "-" << std::get<1>(years) << std::endl;
   return years;
 }
 
