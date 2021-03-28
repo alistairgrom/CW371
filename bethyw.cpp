@@ -286,7 +286,10 @@ std::unordered_set<std::string> BethYw::parseAreasArg(
       return areas;
     }
   }
-
+  // std::unordered_set<std::string>::iterator itr;
+  // for (itr = areas.begin(); itr != areas.end(); itr++)
+  //   std::cout << (*itr) << std::endl;
+  // std::cout << std::endl;
   return areas;
 }
 
@@ -332,6 +335,10 @@ std::unordered_set<std::string> BethYw::parseMeasuresArg(
       return measures;
     }
   }
+  // std::unordered_set<std::string>::iterator itr;
+  // for (itr = measures.begin(); itr != measures.end(); itr++)
+  //   std::cout << (*itr) << std::endl;
+  // std::cout << std::endl;
 
   return measures;
 }
