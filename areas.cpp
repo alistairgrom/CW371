@@ -767,7 +767,7 @@ void Areas::populate(
   {
     populateFromAuthorityCodeCSV(is, cols, &areasFilter);
   }
-  else if (type == BethYw::WelshStatsJSON)
+  if (type == BethYw::WelshStatsJSON)
   {
     populateFromWelshStatsJSON(is, cols, &areasFilter, &measuresFilter, &yearsFilter);
   }
@@ -853,7 +853,10 @@ void Areas::populate(
 std::string Areas::toJSON() const
 {
   json j;
-
+  if (areasContainer.empty())
+  {
+    return j.dump();
+  }
   return j.dump();
 }
 

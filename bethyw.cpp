@@ -29,6 +29,7 @@
 #include <vector>
 
 #include "lib_cxxopts.hpp"
+#include "lib_json.hpp"
 
 #include "areas.h"
 #include "datasets.h"
@@ -77,34 +78,14 @@ int BethYw::run(int argc, char *argv[])
     std::cerr << ex.what() << std::endl;
     std::exit(1);
   }
-  // catch (const std::domain_error &ex)
-  // {
-  //   std::cerr << "Error importing dataset:\n"
-  //             << dir << "areas.csv" << ex.what() << std::endl;
-  //   std::exit(1);
-  // }
 
-  std::cout << "1\n";
   auto datasetsToImport = BethYw::parseDatasetsArg(args);
-  std::cout << "2\n";
   auto areasFilter = BethYw::parseAreasArg(args);
-  std::cout << "3\n";
   auto measuresFilter = BethYw::parseMeasuresArg(args);
-  std::cout << "4\n";
   auto yearsFilter = BethYw::parseYearsArg(args);
-  std::cout << "5\n";
-
-  std::cout << std::endl;
 
   Areas data = Areas();
   BethYw::loadAreas(data, dir, areasFilter);
-
-  BethYw::loadDatasets(data,
-                       dir,
-                       datasetsToImport,
-                       areasFilter,
-                       measuresFilter,
-                       yearsFilter);
 
   if (args.count("json"))
   {
@@ -114,8 +95,29 @@ int BethYw::run(int argc, char *argv[])
   else
   {
     // The output as tables
-    // std::cout << data << std::endl;
+    std::cout << data << std::endl;
   }
+
+  try
+  {
+    BethYw::loadDatasets(data,
+                         dir,
+                         datasetsToImport,
+                         areasFilter,
+                         measuresFilter,
+                         yearsFilter);
+  }
+  catch (const nlohmann::detail::parse_error &ex)
+  {
+    std::exit(1);
+  }
+
+  BethYw::loadDatasets(data,
+                       dir,
+                       datasetsToImport,
+                       areasFilter,
+                       measuresFilter,
+                       yearsFilter);
 
   return 0;
 }
@@ -147,17 +149,17 @@ cxxopts::Options BethYw::cxxoptsSetup()
       "d,datasets",
       "The dataset(s) to import and analyse as a comma-separated list of codes "
       "(omit or set to 'all' to import and analyse all datasets)",
-      cxxopts::value<std::vector<std::string>>())(
+      cxxopts::value<std::vector<std::string>>()->default_value("all"))(
 
       "a,areas",
       "The areas(s) to import and analyse as a comma-separated list of "
       "authority codes (omit or set to 'all' to import and analyse all areas)",
-      cxxopts::value<std::vector<std::string>>())(
+      cxxopts::value<std::vector<std::string>>()->default_value("all"))(
 
       "m,measures",
       "Select a subset of measures from the dataset(s) "
       "(omit or set to 'all' to import and analyse all measures)",
-      cxxopts::value<std::vector<std::string>>())(
+      cxxopts::value<std::vector<std::string>>()->default_value("all"))(
 
       "y,years",
       "Focus on a particular year (YYYY) or "
@@ -224,15 +226,6 @@ std::vector<BethYw::InputFileSource> BethYw::parseDatasetsArg(
   // an argument. Check the documentation! Read it and understand it.
 
   auto inputDatasets = args["datasets"].as<std::vector<std::string>>();
-
-  if (inputDatasets.size() == 0)
-  {
-    for (unsigned int j = 0; j < numDatasets; j++)
-    {
-      datasetsToImport.push_back(allDatasets[j]);
-    }
-    return datasetsToImport;
-  }
 
   // You now need to compare the strings in this vector to the keys in
   // allDatasets above. Populate datasetsToImport with the values
@@ -315,11 +308,6 @@ std::unordered_set<std::string> BethYw::parseAreasArg(
 
   // Retrieve the areas argument like so:
   auto areas_args = args["areas"].as<std::vector<std::string>>();
-
-  if (areas_args.size() == 0)
-  {
-    return areas;
-  }
 
   for (unsigned int i = 0; i < areas_args.size(); i++)
   {
@@ -497,22 +485,22 @@ std::tuple<unsigned int, unsigned int> BethYw::parseYearsArg(cxxopts::ParseResul
 
 void BethYw::loadAreas(Areas areas, std::string dir, std::unordered_set<std::string> areasFilter)
 {
-  // try
-  // {
-  //   dir
-  // }
-  // catch (const std::domain_error &ex)
-  // {
-  //   std::cerr << "Error importing dataset:\n"
-  //             << ex.what() << std::endl;
-  //   std::exit(1);
-  // }
+  try
+  {
+    InputFile input(dir + "areas.csv");
+    input.open();
+  }
+  catch (const std::runtime_error &ex)
+  {
+    std::cerr << "Error importing dataset:\n"
+              << ex.what() << std::endl;
+    std::exit(1);
+  }
   InputFile input(dir + "areas.csv");
   SourceDataType type = SourceDataType::AuthorityCodeCSV;
   SourceColumnMapping cols = InputFiles::AREAS.COLS;
 
   areas.populate(input.open(), type, cols);
-  std::cout << "areas populate called";
 }
 
 /*
@@ -575,9 +563,22 @@ void BethYw::loadDatasets(Areas areas,
                           const std::unordered_set<std::string> areasFilter,
                           const std::unordered_set<std::string> measuresFilter,
                           const std::tuple<unsigned int, unsigned int> yearsFilter)
-
 {
-  InputFile input(datasetsToImport.at(0).InputFileSource::FILE);
-  SourceColumnMapping cols = InputFiles::DATASETS[0].COLS;
-  areas.populate(input.open(), WelshStatsJSON, cols, areasFilter, measuresFilter, yearsFilter);
+
+  try
+  {
+    InputFile input(datasetsToImport.at(1).InputFileSource::FILE + "areas.csv");
+  }
+  catch (const std::runtime_error &ex)
+  {
+    std::cerr << "Error importing dataset:\n"
+              << ex.what() << std::endl;
+    std::exit(1);
+  }
+
+  SourceDataType type = WelshStatsJSON;
+
+  InputFile input(dir + datasetsToImport.at(0).InputFileSource::FILE);
+  SourceColumnMapping cols = InputFiles::DATASETS[1].COLS;
+  areas.populate(input.open(), type, cols, areasFilter, measuresFilter, yearsFilter);
 }
