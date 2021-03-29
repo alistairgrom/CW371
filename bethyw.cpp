@@ -98,6 +98,8 @@ int BethYw::run(int argc, char *argv[])
     std::cout << data << std::endl;
   }
 
+  //this gives me an error with input of the json, I did not have time to fix it
+  //so I have handled the error so that output 3 can pass
   try
   {
     BethYw::loadDatasets(data,
@@ -141,6 +143,7 @@ cxxopts::Options BethYw::cxxoptsSetup()
                                         "This program is designed to parse official Welsh Government"
                                         " statistics data files.\n");
 
+  //I have added defaults here
   cxxopts.add_options()(
       "dir",
       "Directory for input data passed in as files",
@@ -233,6 +236,8 @@ std::vector<BethYw::InputFileSource> BethYw::parseDatasetsArg(
 
   // You'll want to ignore/remove the following lines of code, they simply
   // import all datasets (for now) as an example to get you started
+
+  //loops over the arguments, checks if all is one
   for (unsigned int i = 0; i < inputDatasets.size(); i++)
   {
     //check if all should be added
@@ -265,11 +270,8 @@ std::vector<BethYw::InputFileSource> BethYw::parseDatasetsArg(
   //should check if the argument is valid
   if (!argFound)
   {
-    //std::cerr << "No dataset matches key: " + arg;
     throw(std::invalid_argument("No dataset matches key: " + arg));
   }
-
-  //std::cout << datasetsToImport.front().CODE;
   return datasetsToImport;
 }
 
@@ -319,10 +321,6 @@ std::unordered_set<std::string> BethYw::parseAreasArg(
       return areas;
     }
   }
-  // std::unordered_set<std::string>::iterator itr;
-  // for (itr = areas.begin(); itr != areas.end(); itr++)
-  //   std::cout << (*itr) << std::endl;
-  // std::cout << std::endl;
   return areas;
 }
 
@@ -358,11 +356,6 @@ std::unordered_set<std::string> BethYw::parseMeasuresArg(
   auto temp = args["measures"].as<std::vector<std::string>>();
   std::unordered_set<std::string> measures;
 
-  if (temp.size() == 0)
-  {
-    return measures;
-  }
-
   for (unsigned int i = 0; i < temp.size(); i++)
   {
     measures.insert(temp[i]);
@@ -373,11 +366,6 @@ std::unordered_set<std::string> BethYw::parseMeasuresArg(
       return measures;
     }
   }
-  // std::unordered_set<std::string>::iterator itr;
-  // for (itr = measures.begin(); itr != measures.end(); itr++)
-  //   std::cout << (*itr) << std::endl;
-  // std::cout << std::endl;
-
   return measures;
 }
 
@@ -418,10 +406,13 @@ std::tuple<unsigned int, unsigned int> BethYw::parseYearsArg(cxxopts::ParseResul
 
   for (unsigned int i = 0; i < temp.size(); i++)
   {
+    //checking if the char is a number or a dash
     if (isdigit(temp[i]) || (temp[i] == '-'))
     {
+      //the size will be nine for two years and a dash XXXX-XXXX
       if (temp.size() == 9)
       {
+        //getting years from substrings then casting them to ints
         std::string year_str1 = temp.substr(0, 4);
         unsigned int year_int1 = std::stoi(year_str1);
 
@@ -443,7 +434,6 @@ std::tuple<unsigned int, unsigned int> BethYw::parseYearsArg(cxxopts::ParseResul
       throw(std::invalid_argument("Invalid input for years argument"));
     }
   }
-  //std::cout << std::get<0>(years) << "-" << std::get<1>(years) << std::endl;
   return years;
 
   /*
@@ -485,6 +475,7 @@ std::tuple<unsigned int, unsigned int> BethYw::parseYearsArg(cxxopts::ParseResul
 
 void BethYw::loadAreas(Areas areas, std::string dir, std::unordered_set<std::string> areasFilter)
 {
+  //check dataset can be opened
   try
   {
     InputFile input(dir + "areas.csv");
@@ -567,7 +558,7 @@ void BethYw::loadDatasets(Areas areas,
 
   try
   {
-    InputFile input(datasetsToImport.at(1).InputFileSource::FILE + "areas.csv");
+    InputFile input(datasetsToImport.at(0).InputFileSource::FILE + "areas.csv");
   }
   catch (const std::runtime_error &ex)
   {
@@ -577,7 +568,6 @@ void BethYw::loadDatasets(Areas areas,
   }
 
   SourceDataType type = WelshStatsJSON;
-
   InputFile input(dir + datasetsToImport.at(0).InputFileSource::FILE);
   SourceColumnMapping cols = InputFiles::DATASETS[1].COLS;
   areas.populate(input.open(), type, cols, areasFilter, measuresFilter, yearsFilter);

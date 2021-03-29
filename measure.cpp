@@ -370,18 +370,20 @@ double Measure::getAverage() const
     std::cout << measure << std::end;
 */
 
+//not fully implemented as I didnt get round to doing all outputs
 std::ostream &operator<<(std::ostream &os, Measure measure)
 {
   auto &data = measure.values;
-  //auto it = data.begin();
-
+  os << measure.name << " (" << measure.codename << ")\n";
   for (auto &it : data)
   {
-    os << it.first;
-    os << it.second;
-    os << std::endl;
+    os << "      " << it.first;
   }
-
+  os << std::endl;
+  for (auto &it : data)
+  {
+    os << it.second << " ";
+  }
   return os;
 }
 
@@ -402,6 +404,7 @@ std::ostream &operator<<(std::ostream &os, Measure measure)
     otherwise
 */
 
+//couldnt actively test this due to not doing the outputs
 bool operator==(const Measure &m1, const Measure &m2)
 {
   if (m1.getCodename() == m2.getCodename() && m1.getLabel() == m2.getLabel())

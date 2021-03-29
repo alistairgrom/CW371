@@ -78,6 +78,7 @@ void Areas::setArea(std::string localAuthorityCode, Area area)
 
   this->areasContainer.insert({localAuthorityCode, area});
 
+  //overwrite of an area with the same authority code
   if (getArea(localAuthorityCode).getLocalAuthorityCode() != area.getLocalAuthorityCode())
   {
     areasContainer[localAuthorityCode] = area;
@@ -207,10 +208,16 @@ void Areas::populateFromAuthorityCodeCSV(
 {
   std::string engName, cymName;
 
+  /*
+  take the line of headers
+
+  this could be used to assign to cols values, however since they do not change I have not done it that way
+  */
   getline(is, localAuthorityCode, ',');
   getline(is, engName, ',');
   getline(is, cymName, '\n');
 
+  //while the stream has another line
   while (!is.eof())
   {
 
@@ -367,9 +374,9 @@ void Areas::populateFromWelshStatsJSON(
 
     //--------------------------------------------------------------------//
 
-    //std::cout << areaFilterResult << " : " << measureFilterResult << std::endl;
     std::unordered_set<std::string>::const_iterator gotArea = areasFilter->find(localAuthorityCode);
 
+    //measureCode to lowercase
     std::for_each(measureCode.begin(), measureCode.end(), [](char &c) {
       c = ::tolower(c);
     });
@@ -541,6 +548,9 @@ void Areas::populateFromWelshStatsJSON(
 }
 
 /*
+
+  INCOMPLETE
+
   TODO: Areas::populateFromAuthorityByYearCSV(is,
                                               cols,
                                               areasFilter,
@@ -850,12 +860,14 @@ void Areas::populate(
     Areas data = Areas();
     std::cout << data.toJSON();
 */
+
+//not fully implemented, I was not able to get output working
 std::string Areas::toJSON() const
 {
   json j;
   if (areasContainer.empty())
   {
-    return j.dump();
+    return "{}";
   }
   return j.dump();
 }
@@ -967,6 +979,7 @@ std::string Areas::toJSON() const
     std::cout << areas << std::end;
 */
 
+//not fully implemented, I was not able to get output working
 std::ostream &operator<<(std::ostream &os, const Areas &areas)
 {
   if (areas.size() != 0)

@@ -97,6 +97,7 @@ std::istream &InputFile::open()
     throw(std::runtime_error("InputFile::open: Failed to open file " + this->getSource()));
   }
 
+  //reading ifstream to istream
   if (ifstream)
   {
     ifstream.seekg(0, ifstream.end);

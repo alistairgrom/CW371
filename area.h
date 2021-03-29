@@ -63,7 +63,7 @@ public:
   std::string getName(std::string) const;
   void setName(std::string lang, std::string name);
 
-  void setMeasure(std::string codename, Measure measure);
+  void setMeasure(std::string codename, const Measure measure);
   Measure &getMeasure(std::string key);
   int size() const;
   std::map<std::string, Measure, comp> measures;
