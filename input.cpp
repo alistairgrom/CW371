@@ -92,9 +92,6 @@ std::istream &InputFile::open()
   std::ifstream ifstream(this->getSource().c_str());
   istream.rdbuf(ifstream.rdbuf());
 
-  // std::cout << "YEPPP" << std::endl;
-  // std::cout << istream.rdbuf();
-
   if (!ifstream.is_open())
   {
     throw(std::runtime_error("InputFile::open: Failed to open file " + this->getSource()));

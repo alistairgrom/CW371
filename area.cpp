@@ -311,6 +311,29 @@ int Area::size() const
     area.setName("eng", "Powys");
     std::cout << area << std::endl;
 */
+std::ostream &operator<<(std::ostream &os, const Area &area)
+{
+  if (area.getName("eng").empty() && area.getName("cym").empty())
+  {
+    os << "Unnamed";
+  }
+  if (!area.getName("eng").empty())
+  {
+    os << area.getName("eng");
+  }
+  if (!area.getName("cym").empty())
+  {
+    os << " / " + area.getName("cym");
+  }
+  os << " (" + area.localAuthorityCode + ")\n";
+
+  if (area.measures.size() == 0)
+  {
+    os << "<no measures>";
+  }
+
+  return os;
+}
 
 /*
   TODO: operator==(lhs, rhs)

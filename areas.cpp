@@ -223,7 +223,6 @@ void Areas::populateFromAuthorityCodeCSV(
     area.setName("cym", cymName);
     this->setArea(localAuthorityCode, area);
   }
-  //std::cout << "cols size: " << cols.size() << std::endl;
 }
 
 /*
@@ -756,23 +755,27 @@ void Areas::populate(std::istream &is,
       &measuresFilter,
       &yearsFilter);
 */
-// void Areas::populate(
-//     std::istream &is,
-//     const BethYw::SourceDataType &type,
-//     const BethYw::SourceColumnMapping &cols,
-//     const StringFilterSet *const areasFilter,
-//     const StringFilterSet *const measuresFilter,
-//     const YearFilterTuple *const yearsFilter)
-// {
-//   if (type == BethYw::AuthorityCodeCSV)
-//   {
-//     populateFromAuthorityCodeCSV(is, cols, areasFilter);
-//   }
-//   else
-//   {
-//     throw std::runtime_error("Areas::populate: Unexpected data type");
-//   }
-// }
+void Areas::populate(
+    std::istream &is,
+    const BethYw::SourceDataType &type,
+    const BethYw::SourceColumnMapping &cols,
+    const StringFilterSet areasFilter,
+    const StringFilterSet measuresFilter,
+    const YearFilterTuple yearsFilter)
+{
+  if (type == BethYw::AuthorityCodeCSV)
+  {
+    populateFromAuthorityCodeCSV(is, cols, &areasFilter);
+  }
+  else if (type == BethYw::WelshStatsJSON)
+  {
+    populateFromWelshStatsJSON(is, cols, &areasFilter, &measuresFilter, &yearsFilter);
+  }
+  else
+  {
+    throw std::runtime_error("Areas::populate: Unexpected data type");
+  }
+}
 
 /*
   TODO: Areas::toJSON()
@@ -960,3 +963,12 @@ std::string Areas::toJSON() const
     Areas areas();
     std::cout << areas << std::end;
 */
+
+std::ostream &operator<<(std::ostream &os, const Areas &areas)
+{
+  if (areas.size() != 0)
+  {
+    os << areas.area.getName("eng") << " / " << areas.area.getName("cym") << std::endl;
+  }
+  return os;
+}

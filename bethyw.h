@@ -49,8 +49,6 @@ namespace BethYw
 */
   cxxopts::Options cxxoptsSetup();
 
-  void loadAreas(Areas data, std::string dir, std::unordered_set<std::string> areasFilter);
-
   /*
   Parse the datasets argument and return a std::vector of all the datasets
   to import. InputFileSource is declared in datasets.h.
@@ -67,6 +65,15 @@ namespace BethYw
   std::unordered_set<std::string> parseMeasuresArg(cxxopts::ParseResult &args);
 
   std::tuple<unsigned int, unsigned int> parseYearsArg(cxxopts::ParseResult &args);
+
+  void loadAreas(Areas data, std::string dir, std::unordered_set<std::string> areasFilter) noexcept(false);
+
+  void loadDatasets(Areas areas,
+                    std::string dir,
+                    const std::vector<BethYw::InputFileSource> datasetsToImport,
+                    const std::unordered_set<std::string> areasFilter,
+                    const std::unordered_set<std::string> measuresFilter,
+                    const std::tuple<unsigned int, unsigned int> yearsFilter) noexcept(false);
 
 } // namespace BethYw
 

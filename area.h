@@ -18,6 +18,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <iostream>
 
 #include "measure.h"
 
@@ -70,6 +71,7 @@ public:
   bool compareChar(char &c1, char &c2);
   bool caseInSensStringCompare(std::string &str1, std::string &str2);
 
+  friend std::ostream &operator<<(std::ostream &os, const Area &area);
   friend bool operator==(const Area &a1, const Area &a2);
 };
 
