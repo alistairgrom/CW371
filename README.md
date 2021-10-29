@@ -3,8 +3,6 @@
 
 All the unit tests provided pass.
 
-The output tests from 1-3 pass. From then on they just print out a blank line if tables and a blank json "{}" if -j is used.
-
 --Compiler--
 ali@desktop:/mnt/g/Documents/year3/oop/cw/964398$ gcc --version
 gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
